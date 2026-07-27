@@ -55,20 +55,20 @@ this is the progress file
 # 📌 Microservices Learning Session Context
 
 - **Project:** Event-Driven Food Delivery Microservices
-- **Current Phase:** Phase 1 (Initial Setup & Architecture)
-- **Current Step:** Setting up Git Repository & Version Control
-- **Last Completed Task:** Initialized solution, created `FoodDelivery.Shared.Contracts`, and defined `OrderSubmittedEvent`
+- **Current Phase:** Phase 2 (Restaurant & Menu Microservice)
+- **Current Step:** Setting up Application Layer (CQRS & MediatR)
+- **Last Completed Task:** Created Clean Architecture project layers for `Restaurant` and defined `Restaurant` and `MenuItem` domain entities.
 
 ### 🏗️ Built Services Status
 - [x] Shared Building Blocks (Contracts & Events) - *Completed*
 - [ ] Identity / Auth Service - *Pending*
-- [ ] Product / Menu Service - *Pending*
+- [/] Product / Menu Service (Restaurant) - *In Progress*
 - [ ] Order Microservice - *Pending*
 - [ ] Delivery / Driver Service - *Pending*
 
 ### 📝 Notes / Blockers:
-- Docker Compose running PostgreSQL & RabbitMQ locally.
-- Next step: Initialize Git repository and begin Phase 2 (Restaurant/Menu Service).
+- Domain layer complete with DDD principles (`private set`, factory methods).
+- Next step: Install MediatR and build CQRS Commands/Queries in `Restaurant.Application`.
 
 
 

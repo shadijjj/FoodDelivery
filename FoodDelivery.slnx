@@ -1,5 +1,12 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/Restaurant/">
+    <Project Path="src/Services/Restaurant/Restaurant.API/Restaurant.API.csproj" />
+    <Project Path="src/Services/Restaurant/Restaurant.Application/Restaurant.Application.csproj" />
+    <Project Path="src/Services/Restaurant/Restaurant.Domain/Restaurant.Domain.csproj" />
+    <Project Path="src/Services/Restaurant/Restaurant.Infrastructure/Restaurant.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="src/Shared/FoodDelivery.Shared.Contracts/FoodDelivery.Shared.Contracts.csproj" />
   </Folder>
