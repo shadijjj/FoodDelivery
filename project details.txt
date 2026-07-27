@@ -56,19 +56,19 @@ this is the progress file
 
 - **Project:** Event-Driven Food Delivery Microservices
 - **Current Phase:** Phase 2 (Restaurant & Menu Microservice)
-- **Current Step:** Setting up Application Layer (CQRS & MediatR)
-- **Last Completed Task:** Created Clean Architecture project layers for `Restaurant` and defined `Restaurant` and `MenuItem` domain entities.
+- **Current Step:** Adding Menu Items & Read Queries (CQRS)
+- **Last Completed Task:** Configured PostgreSQL with EF Core, applied initial database migration, and successfully created a restaurant via Swagger.
 
 ### 🏗️ Built Services Status
 - [x] Shared Building Blocks (Contracts & Events) - *Completed*
 - [ ] Identity / Auth Service - *Pending*
-- [/] Product / Menu Service (Restaurant) - *In Progress*
+- [/] Product / Menu Service (Restaurant) - *In Progress (Write side live!)*
 - [ ] Order Microservice - *Pending*
 - [ ] Delivery / Driver Service - *Pending*
 
 ### 📝 Notes / Blockers:
-- Domain layer complete with DDD principles (`private set`, factory methods).
-- Next step: Install MediatR and build CQRS Commands/Queries in `Restaurant.Application`.
+- Restaurant API successfully running, connected to PostgreSQL in Docker.
+- Next step: Add `AddMenuItemCommand` and `GetRestaurantsQuery` to complete Phase 2.
 
 
 
