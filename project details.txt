@@ -55,20 +55,20 @@ this is the progress file
 # 📌 Microservices Learning Session Context
 
 - **Project:** Event-Driven Food Delivery Microservices
-- **Current Phase:** Phase 3 (Ordering Microservice & MassTransit Event Bus)
-- **Current Step:** Consuming Events (Building an Event Consumer)
-- **Last Completed Task:** Successfully submitted an order in `Ordering.API`, persisted records to `OrderingDb`, and published `OrderSubmittedEvent` live to RabbitMQ via MassTransit.
+- **Current Phase:** Phase 4 (Delivery Microservice & Event Consumers)
+- **Current Step:** Creating Delivery Service & Consuming `OrderSubmittedEvent`
+- **Last Completed Task:** Added enterprise-grade error handling (FluentValidation + MediatR `ValidationBehavior` + RFC 7807 `GlobalExceptionHandler`) across both `Ordering` and `Restaurant` microservices. Verified live event publishing in RabbitMQ.
 
 ### 🏗️ Built Services Status
 - [x] Shared Building Blocks (Contracts & Events) - *Completed*
 - [ ] Identity / Auth Service - *Pending*
-- [x] Product / Menu Service (Restaurant) - *Completed*
-- [x] Order Microservice - *Completed (Publishes OrderSubmittedEvent)*
-- [ ] Delivery / Driver Service - *Pending (Next: Consume OrderSubmittedEvent)*
+- [x] Product / Menu Service (Restaurant) - *Completed (Includes Validation & ProblemDetails)*
+- [x] Order Microservice - *Completed (Publishes OrderSubmittedEvent + Validation)*
+- [ ] Delivery / Driver Service - *Pending (Next Up)*
 
 ### 📝 Notes / Blockers:
-- Ordering service publishing live events to RabbitMQ.
-- Next step: Build the `Delivery` microservice (or a Consumer) to listen to `OrderSubmittedEvent` and react asynchronously!
+- Both `Restaurant` and `Ordering` services are fully wired to PostgreSQL, validated via FluentValidation, and returning clean HTTP `400` errors instead of `500` crashes.
+- Next step: Create the `Delivery` microservice and implement an `OrderSubmittedConsumer` to automatically listen to RabbitMQ and assign drivers asynchronously!
 
 
 
