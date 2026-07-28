@@ -1,6 +1,12 @@
 <Solution>
   <Folder Name="/src/" />
   <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/Ordering/">
+    <Project Path="src/Services/Ordering/Ordering.API/Ordering.API.csproj" />
+    <Project Path="src/Services/Ordering/Ordering.Application/Ordering.Application.csproj" />
+    <Project Path="src/Services/Ordering/Ordering.Domain/Ordering.Domain.csproj" />
+    <Project Path="src/Services/Ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/src/Services/Restaurant/">
     <Project Path="src/Services/Restaurant/Restaurant.API/Restaurant.API.csproj" />
     <Project Path="src/Services/Restaurant/Restaurant.Application/Restaurant.Application.csproj" />
