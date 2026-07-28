@@ -1,33 +1,42 @@
+using FluentValidation;
 using MassTransit;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Ordering.API.Middleware;
+using Ordering.Application.Behaviors;
 using Ordering.Application.Commands;
 using Ordering.Application.Interfaces;
+using Ordering.Application.Validators;
 using Ordering.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Core API Services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
-// 2. Register MediatR
+// 2. Register FluentValidation & MediatR Pipeline Behavior
+builder.Services.AddValidatorsFromAssemblyContaining<SubmitOrderCommandValidator>();
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+// 3. Register MediatR
 builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssembly(typeof(SubmitOrderCommand).Assembly));
 
-// 3. Register DbContext with PostgreSQL
+// 4. Register DbContext with PostgreSQL
 builder.Services.AddDbContext<OrderingDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IOrderingDbContext>(provider => 
     provider.GetRequiredService<OrderingDbContext>());
 
-// 4. Configure MassTransit with RabbitMQ
+// 5. Configure MassTransit with RabbitMQ
 builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context, cfg) =>
     {
-        // Connect to local RabbitMQ Docker container
         cfg.Host("localhost", "/", h =>
         {
             h.Username("guest");
@@ -37,6 +46,9 @@ builder.Services.AddMassTransit(x =>
 });
 
 var app = builder.Build();
+
+// Activate Global Exception Handling Middleware
+app.UseExceptionHandler();
 
 if (app.Environment.IsDevelopment())
 {
