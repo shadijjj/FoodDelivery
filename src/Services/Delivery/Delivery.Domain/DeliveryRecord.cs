@@ -21,6 +21,7 @@ public class DeliveryRecord
         CreatedAt = DateTime.UtcNow;
     }
 
+
     public void AssignDriver(string driverName)
     {
         if (string.IsNullOrWhiteSpace(driverName))

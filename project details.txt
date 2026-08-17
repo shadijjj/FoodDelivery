@@ -55,21 +55,21 @@ this is the progress file
 # 📌 Microservices Learning Session Context
 
 - **Project:** Event-Driven Food Delivery Microservices
-- **Current Phase:** Phase 5 (API Gateway & Identity Service)
-- **Current Step:** Building Identity & Authentication Microservice
-- **Last Completed Task:** Built and verified YARP API Gateway (`http://localhost:5000`) routing requests to `Restaurant`, `Ordering`, and `Delivery` services.
+- **Current Phase:** Phase 5 (API Gateway & Identity Service) - COMPLETED
+- **Current Step:** Ready for Phase 6 (Dockerization / Containerization or Frontend UI)
+- **Last Completed Task:** Built `Identity.API` (ASP.NET Core Identity + JWT), routed it through `ApiGateway` (port 5000), and secured `Ordering.API` endpoints with `[Authorize]` JWT bearer token verification.
 
 ### 🏗️ Built Services Status
 - [x] Shared Building Blocks (Contracts & Events) - *Completed*
 - [x] API Gateway (YARP Reverse Proxy) - *Completed*
-- [ ] Identity / Auth Service - *In Progress*
+- [x] Identity / Auth Service - *Completed*
 - [x] Product / Menu Service (Restaurant) - *Completed*
-- [x] Order Microservice - *Completed*
+- [x] Order Microservice - *Completed (Secured with JWT)*
 - [x] Delivery / Driver Service - *Completed*
 
 ### 📝 Notes / Blockers:
-- All external client calls flow through YARP on port `5000`.
-- Next step: Build the `Identity` microservice using ASP.NET Core Identity & JWT to issue access tokens and protect endpoints across all microservices.
+- Full system architecture is live: Client ➔ YARP Gateway (5000) ➔ Identity / Ordering / Restaurant / Delivery ➔ PostgreSQL / RabbitMQ.
+- Next potential phase: Containerize all services and databases using `docker-compose`, or build a light demo UI (React/Blazor/Vanilla JS).
 
 
 
