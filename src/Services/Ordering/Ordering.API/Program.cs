@@ -1,7 +1,10 @@
+using System.Text;
 using FluentValidation;
 using MassTransit;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Ordering.API.Middleware;
 using Ordering.Application.Behaviors;
 using Ordering.Application.Commands;
@@ -11,6 +14,7 @@ using Ordering.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// 1. Core Services & Exception Handling
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -45,6 +49,28 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
+// 6. Configure JWT Bearer Authentication
+var secretKey = Encoding.UTF8.GetBytes("SuperSecretKeyForFoodDeliveryMicroservicesProject2026!");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "FoodDeliveryIdentity",
+        ValidAudience = "FoodDeliveryClients",
+        IssuerSigningKey = new SymmetricSecurityKey(secretKey)
+    };
+});
+
 var app = builder.Build();
 
 // Activate Global Exception Handling Middleware
@@ -57,7 +83,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Authentication MUST come before Authorization
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();
