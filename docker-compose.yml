@@ -1,25 +1,85 @@
-version: '3.8'
 
 services:
+  # --- INFRASTRUCTURE ---
+  postgres:
+    image: postgres:latest
+    container_name: fooddelivery-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: fooddelivery-rabbitmq
     ports:
-      - "5672:5672"     # AMQP messaging port
-      - "15672:15672"   # Management Dashboard UI
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      - "5672:5672"
+      - "15672:15672"
 
-  postgres:
-    image: postgres:16-alpine
-    container_name: fooddelivery-postgres
-    ports:
-      - "5432:5432"
+  # --- MICROSERVICES ---
+  identity-api:
+    image: identity-api
+    container_name: identity-api
+    build:
+      context: .
+      dockerfile: src/Services/Identity/Identity.API/Dockerfile
     environment:
-      POSTGRES_PASSWORD: postgrespassword
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=IdentityDb;Username=postgres;Password=postgrespassword
+    depends_on:
+      - postgres
+
+  restaurant-api:
+    image: restaurant-api
+    container_name: restaurant-api
+    build:
+      context: .
+      dockerfile: src/Services/Restaurant/Restaurant.API/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=RestaurantDb;Username=postgres;Password=postgrespassword
+    depends_on:
+      - postgres
+
+  ordering-api:
+    image: ordering-api
+    container_name: ordering-api
+    build:
+      context: .
+      dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=OrderingDb;Username=postgres;Password=postgrespassword
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  delivery-api:
+    image: delivery-api
+    container_name: delivery-api
+    build:
+      context: .
+      dockerfile: src/Services/Delivery/Delivery.API/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=DeliveryDb;Username=postgres;Password=postgrespassword
+    depends_on:
+      - postgres
+      - rabbitmq
+
+  # --- GATEWAY ---
+  api-gateway:
+    image: api-gateway
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: src/Gateways/ApiGateway/Dockerfile
+    ports:
+      - "5000:80"
+    depends_on:
+      - identity-api
+      - restaurant-api
+      - ordering-api
+      - delivery-api
 
 volumes:
   postgres_data:
